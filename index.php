@@ -1,7 +1,5 @@
 <?php
-
 $hotels = [
-
     [
         'name' => 'Hotel Belvedere',
         'description' => 'Hotel Belvedere Descrizione',
@@ -37,9 +35,35 @@ $hotels = [
         'vote' => 2,
         'distance_to_center' => 50
     ],
-
 ];
+function park($hotels)
+{
+    $filterHotel = [];
+    $parkValue = null;
+    if (isset($_GET['parking'])) {
+        $parkValue = $_GET['parking'];
+    }
+    if ($parkValue == 1) {
+        $filterHotel = [];
+        foreach ($hotels as $hotel) {
+            if ($hotel['parking']) {
+                array_push($filterHotel, $hotel);
+            }
+        }
+        return $filterHotel;
+    } elseif ($parkValue == 2) {
+        $filterHotel = [];
+        foreach ($hotels as $hotel) {
+            if (!$hotel['parking']) {
+                array_push($filterHotel, $hotel);
+            }
+        }
+        return $filterHotel;
+    } else {
+        return $hotels;
+    }
 
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -58,6 +82,25 @@ $hotels = [
     <div class="container">
         <div class="row">
             <div class="col">
+                <form action="./index.php" methods="GET">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="parking" id="flexRadioDefault1" value="1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            con parking
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="parking" id="flexRadioDefault2" value="2">
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            senza parking
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -69,7 +112,7 @@ $hotels = [
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($hotels as $hotel) { ?>
+                        <?php foreach (park($hotels) as $hotel) { ?>
                         <tr>
                             <td>
                                 <?php echo $hotel['name']; ?>
