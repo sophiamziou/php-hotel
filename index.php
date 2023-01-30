@@ -78,7 +78,13 @@ $hotels = [
                                 <?php echo $hotel['description']; ?>
                             </td>
                             <td>
-                                <?php echo $hotel['parking']; ?>
+                                <?php
+                                    if ($hotel['parking']) {
+                                        echo 'sì';
+                                    } else {
+                                        echo 'no';
+                                    }
+                                    ?>
                             </td>
                             <td>
                                 <?php echo $hotel['vote']; ?>
